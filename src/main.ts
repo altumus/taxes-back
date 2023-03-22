@@ -5,6 +5,7 @@ export const BASE_URL = process.env.DEV_URL;
 
 async function bootstrap() {
   const app = await NestFactory.create(AppModule);
-  await app.listen(3000);
+  app.enableCors();
+  await app.listen(3333);
 }
 bootstrap();

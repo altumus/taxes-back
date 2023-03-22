@@ -10,12 +10,40 @@ datasource db {
   url      = env("DATABASE_URL")
 }
 
-model Article {
-  id          Int      @id @default(autoincrement())
-  title       String   @unique
-  description String?
-  body        String
-  published   Boolean  @default(false)
-  createdAt   DateTime @default(now())
-  updatedAt   DateTime @updatedAt
+model Client {
+  id            Int            @id @default(autoincrement())
+  name          String
+  organizations Organization[]
+  dateCreate    DateTime       @default(now())
+  inn           String?
+
+  user   User @relation(fields: [userId], references: [id])
+  userId Int
+
+  @@map("clients")
+}
+
+model Organization {
+  id                  Int    @id @default(autoincrement())
+  name                String
+  organizationInn     String @unique
+  organizationKpp     String
+  organizationOgrn    String @unique
+  organizationAddress String
+  ownerPosition       String
+
+  Client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId Int?
+
+  @@map("organizations")
+}
+
+model User {
+  id       Int      @id @default(autoincrement())
+  name     String
+  login    String   @unique
+  password String
+  Client   Client[]
+
+  @@map("users")
 }
