@@ -1,6 +1,7 @@
 import { PrismaClient } from '@prisma/client';
 const prisma = new PrismaClient();
 async function main() {
+  // Заполнение типа налогов
   await prisma.taxesType.createMany({
     data: [
       {
@@ -34,6 +35,24 @@ async function main() {
       {
         type: 'ORN_UL',
         bid: 20,
+      },
+    ],
+  });
+
+  // Заполнение инспекций
+  await prisma.inspections.createMany({
+    data: [
+      {
+        code: '0001',
+        name: 'Ярославская налоговая инспекция "The World"',
+      },
+      {
+        code: '0002',
+        name: 'Московская налоговая инспекция "King Crimson"',
+      },
+      {
+        code: '0003',
+        name: 'Питерская налоговая инспекция "Made in Heaven"',
       },
     ],
   });

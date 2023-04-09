@@ -47,13 +47,22 @@ model Organization {
 }
 
 model User {
-  id       Int       @id @default(autoincrement())
-  name     String
-  login    String    @unique
-  password String
-  type     UsersType @default(ADMIN)
+  id           Int         @id @default(autoincrement())
+  name         String
+  login        String      @unique
+  password     String
+  type         UsersType   @default(ADMIN)
+  Inspections  Inspections @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  inspectionId Int
 
   @@map("users")
+}
+
+model Inspections {
+  id   Int    @id @default(autoincrement())
+  name String
+  code String
+  User User[]
 }
 
 enum UsersType {
