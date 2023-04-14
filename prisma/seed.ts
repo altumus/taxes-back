@@ -37,32 +37,42 @@ async function main() {
         bid: 20,
       },
     ],
-  });
-
-  // Заполнение инспекций
-  await prisma.inspections.createMany({
-    data: [
-      {
-        code: '0001',
-        name: 'Ярославская налоговая инспекция "The World"',
+  }),
+    // Заполнение инспекций
+    await prisma.inspections.createMany({
+      data: [
+        {
+          code: '0001',
+          name: 'Ярославская налоговая инспекция "The World"',
+        },
+        {
+          code: '0002',
+          name: 'Московская налоговая инспекция "King Crimson"',
+        },
+        {
+          code: '0003',
+          name: 'Питерская налоговая инспекция "Made in Heaven"',
+        },
+      ],
+    }),
+    // Создание админа
+    await prisma.user.create({
+      data: {
+        login: 'brunyhow@mail.ru',
+        inspectionId: 1,
+        name: 'Бухарин Максим Андреевич',
+        type: 'ADMIN',
+        password: '25d55ad283aa400af464c76d713c07ad',
       },
-      {
-        code: '0002',
-        name: 'Московская налоговая инспекция "King Crimson"',
-      },
-      {
-        code: '0003',
-        name: 'Питерская налоговая инспекция "Made in Heaven"',
-      },
-    ],
-  });
+    });
 }
 main()
   .then(() => {
     console.log('seed done');
   })
-  .catch(() => {
+  .catch((error) => {
     console.log('seed failed');
+    console.log(error);
   })
   .finally(async () => {
     await prisma.$disconnect();

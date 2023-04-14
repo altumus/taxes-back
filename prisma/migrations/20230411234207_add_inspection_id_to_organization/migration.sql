@@ -9,3 +9,6 @@ ALTER TABLE "organizations" ADD COLUMN     "inspectionId" INTEGER NOT NULL;
 
 -- AddForeignKey
 ALTER TABLE "organizations" ADD CONSTRAINT "organizations_inspectionId_fkey" FOREIGN KEY ("inspectionId") REFERENCES "Inspections"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
