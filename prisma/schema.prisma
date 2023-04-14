@@ -31,14 +31,16 @@ model Client {
 }
 
 model Organization {
-  id                           Int     @id @default(autoincrement())
+  id                           Int         @id @default(autoincrement())
   name                         String
-  organizationInn              String  @unique
+  organizationInn              String      @unique
   organizationKpp              String
-  organizationOgrn             String  @unique
+  organizationOgrn             String      @unique
   organizationPhysicalAddress  String?
   organizationJuridicalAddress String?
   ownerPosition                String
+  inspection                   Inspections @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
+  inspectionId                 Int
 
   Client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId Int?
@@ -59,10 +61,11 @@ model User {
 }
 
 model Inspections {
-  id   Int    @id @default(autoincrement())
-  name String
-  code String
-  User User[]
+  id           Int            @id @default(autoincrement())
+  name         String
+  code         String
+  User         User[]
+  Organization Organization[]
 }
 
 enum UsersType {
