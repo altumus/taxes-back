@@ -13,8 +13,9 @@ datasource db {
 model TaxesType {
   id Int @id @default(autoincrement())
 
-  type String
-  bid  Int
+  type         String
+  bid          Int
+  Organization Organization[]
 }
 
 model Client {
@@ -41,6 +42,9 @@ model Organization {
   ownerPosition                String
   inspection                   Inspections @relation(fields: [inspectionId], references: [id], onDelete: Cascade)
   inspectionId                 Int
+  taxesType                    TaxesType   @relation(fields: [taxesTypeId], references: [id], onDelete: Cascade)
+  taxesTypeId                  Int
+  income                       Int         @default(0)
 
   Client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId Int?

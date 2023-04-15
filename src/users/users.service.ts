@@ -11,9 +11,27 @@ export class UsersService {
         login,
         password,
       },
+      include: {
+        Inspections: {
+          select: {
+            name: true,
+            code: true,
+          },
+        },
+      },
     });
     if (user) {
-      return user;
+      const formattedUser = {
+        id: user.id,
+        inspectionId: user.inspectionId,
+        login: user.login,
+        name: user.name,
+        password: user.password,
+        type: user.type,
+        inspectionCode: user.Inspections.code,
+        inspectionName: user.Inspections.name,
+      };
+      return formattedUser;
     }
     throw new ForbiddenException('Unauthorized');
   }
