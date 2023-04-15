@@ -44,7 +44,7 @@ model Organization {
   inspectionId                 Int
   taxesType                    TaxesType   @relation(fields: [taxesTypeId], references: [id], onDelete: Cascade)
   taxesTypeId                  Int
-  income                       Int         @default(0)
+  income                       Float       @default(0)
 
   Client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId Int?

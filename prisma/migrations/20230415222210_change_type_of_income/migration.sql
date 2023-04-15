@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "organizations" ALTER COLUMN "income" SET DEFAULT 0,
+ALTER COLUMN "income" SET DATA TYPE DOUBLE PRECISION;
