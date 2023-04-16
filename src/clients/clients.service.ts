@@ -8,12 +8,16 @@ export class ClientsService {
   constructor(private prisma: PrismaService) {}
 
   async getClientsByInspectionId(inspectionId: number) {
-    const clients = await this.prisma.organization.findMany({
+    const clients = await this.prisma.client.findMany({
       where: {
-        inspectionId,
+        organizations: {
+          every: {
+            inspectionId,
+          },
+        },
       },
       include: {
-        Client: true,
+        organizations: true,
       },
     });
 
