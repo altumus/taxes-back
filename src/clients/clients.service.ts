@@ -22,6 +22,14 @@ export class ClientsService {
       },
       include: {
         organizations: true,
+        TaxesPayment: {
+          select: {
+            id: true,
+            paymentDate: true,
+            nextPaymentDate: true,
+            income: true,
+          },
+        },
       },
     });
 
