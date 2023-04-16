@@ -27,6 +27,7 @@ model Client {
   phone         String?
   email         String?
   clientType    ClientsType    @default(IP)
+  TaxesPayment  TaxesPayment[]
 
   @@map("clients")
 }
@@ -44,12 +45,23 @@ model Organization {
   inspectionId                 Int
   taxesType                    TaxesType   @relation(fields: [taxesTypeId], references: [id], onDelete: Cascade)
   taxesTypeId                  Int
-  income                       Float       @default(0)
 
-  Client   Client? @relation(fields: [clientId], references: [id], onDelete: Cascade)
-  clientId Int?
+  Client       Client?        @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId     Int?
+  TaxesPayment TaxesPayment[]
 
   @@map("organizations")
+}
+
+model TaxesPayment {
+  id              Int          @id @default(autoincrement())
+  Client          Client       @relation(fields: [clientId], references: [id], onDelete: Cascade)
+  clientId        Int
+  Organization    Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId  Int
+  income          Float
+  paymentDate     DateTime     @default(now())
+  nextPaymentDate String
 }
 
 model User {

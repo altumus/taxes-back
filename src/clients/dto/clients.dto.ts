@@ -52,8 +52,16 @@ export class CreateOrganizationDto {
   taxesTypeId: number;
 
   @IsNumber()
-  income: number;
+  clientId: number;
+}
 
+export class CreatePaymentDto {
   @IsNumber()
   clientId: number;
+
+  @IsNumber()
+  organizationId: number;
+
+  @IsNumber()
+  income: number;
 }

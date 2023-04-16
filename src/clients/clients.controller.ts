@@ -1,6 +1,10 @@
 import { Body, Controller, Get, Param, Post } from '@nestjs/common';
 import { ClientsService } from './clients.service';
-import { CreateClientDto, CreateOrganizationDto } from './dto/clients.dto';
+import {
+  CreateClientDto,
+  CreateOrganizationDto,
+  CreatePaymentDto,
+} from './dto/clients.dto';
 
 @Controller('clients')
 export class ClientsController {
@@ -19,5 +23,10 @@ export class ClientsController {
   @Post('add-organization')
   createOrganization(@Body() dto: CreateOrganizationDto) {
     return this.clientsService.createOrganization(dto);
+  }
+
+  @Post('add-payment')
+  createPayment(@Body() dto: CreatePaymentDto) {
+    return this.clientsService.createPayment(dto);
   }
 }

@@ -1,6 +1,10 @@
 import { Injectable } from '@nestjs/common';
 import { PrismaService } from 'src/prisma/prisma.service';
-import { CreateClientDto, CreateOrganizationDto } from './dto/clients.dto';
+import {
+  CreateClientDto,
+  CreateOrganizationDto,
+  CreatePaymentDto,
+} from './dto/clients.dto';
 import { ClientsType } from '@prisma/client';
 
 @Injectable()
@@ -60,12 +64,34 @@ export class ClientsService {
           organizationPhysicalAddress: dto.organizationPhysicalAddress,
           organizationJuridicalAddress: dto.organizationJuridicalAddress,
           taxesTypeId: dto.taxesTypeId,
-          income: dto.income,
         },
       });
       return organization;
     } catch (error) {
       return error;
     }
+  }
+
+  async createPayment(dto: CreatePaymentDto) {
+    const currentMonth = new Date().getMonth();
+    const currentYear = new Date().getFullYear();
+    let nextPaymentDate;
+    switch (true) {
+      case currentMonth <= 2:
+        nextPaymentDate = new Date(`05-25-${currentYear}`);
+        break;
+      case currentMonth <= 8:
+        nextPaymentDate = new Date(`11-25-${currentYear}`);
+        break;
+    }
+    const payment = this.prisma.taxesPayment.create({
+      data: {
+        income: dto.income,
+        clientId: dto.clientId,
+        nextPaymentDate: nextPaymentDate,
+        organizationId: dto.organizationId,
+      },
+    });
+    return payment;
   }
 }
