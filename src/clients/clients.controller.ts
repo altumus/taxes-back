@@ -25,6 +25,17 @@ export class ClientsController {
     return this.clientsService.createOrganization(dto);
   }
 
+  @Get('client-info/:inspectionId/:clientId')
+  getClientInfo(
+    @Param('inspectionId') inspectionId: number,
+    @Param('clientId') clientId: number,
+  ) {
+    return this.clientsService.getClientInfo(
+      Number(inspectionId),
+      Number(clientId),
+    );
+  }
+
   @Post('add-payment')
   createPayment(@Body() dto: CreatePaymentDto) {
     return this.clientsService.createPayment(dto);

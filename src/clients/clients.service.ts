@@ -36,6 +36,22 @@ export class ClientsService {
     return clients;
   }
 
+  async getClientInfo(inspectionId: number, clientId: number) {
+    return this.prisma.client.findFirst({
+      where: {
+        id: clientId,
+        organizations: {
+          every: {
+            inspectionId,
+          },
+        },
+      },
+      include: {
+        organizations: true,
+      },
+    });
+  }
+
   async createClient(dto: CreateClientDto) {
     const foundClient = await this.prisma.client.findFirst({
       where: {
@@ -76,6 +92,7 @@ export class ClientsService {
       });
       return organization;
     } catch (error) {
+      console.log('error', error);
       return error;
     }
   }
