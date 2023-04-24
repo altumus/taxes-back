@@ -14,3 +14,8 @@ ALTER TABLE "organizations" ADD CONSTRAINT "organizations_inspectionId_fkey" FOR
 
 
 
+
+
+
+
+

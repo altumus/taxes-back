@@ -49,6 +49,7 @@ model Organization {
   Client       Client?        @relation(fields: [clientId], references: [id], onDelete: Cascade)
   clientId     Int?
   TaxesPayment TaxesPayment[]
+  TaxesSuccessPayment TaxesSuccessPayment[]
 
   @@map("organizations")
 }
@@ -62,6 +63,15 @@ model TaxesPayment {
   income          Float
   paymentDate     DateTime     @default(now())
   nextPaymentDate String
+  mustPay String?
+}
+
+model TaxesSuccessPayment {
+  id Int @id @default(autoincrement())
+  Organization Organization @relation(fields: [organizationId], references: [id], onDelete: Cascade)
+  organizationId Int
+  paymentDate DateTime @default(now())
+  paymentSum String
 }
 
 model User {

@@ -28,6 +28,7 @@ export class ClientsService {
             paymentDate: true,
             nextPaymentDate: true,
             income: true,
+            mustPay: true,
           },
         },
       },
@@ -47,7 +48,12 @@ export class ClientsService {
         },
       },
       include: {
-        organizations: true,
+        organizations: {
+          include: {
+            TaxesSuccessPayment: true,
+            TaxesPayment: true,
+          },
+        },
       },
     });
   }
@@ -103,20 +109,57 @@ export class ClientsService {
     let nextPaymentDate;
     switch (true) {
       case currentMonth <= 2:
-        nextPaymentDate = new Date(`05-25-${currentYear}`);
+        nextPaymentDate = new Date(`02-25-${currentYear}`);
+        break;
+      case currentMonth <= 5:
+        nextPaymentDate = new Date(`5-25-${currentYear}`);
         break;
       case currentMonth <= 8:
-        nextPaymentDate = new Date(`11-25-${currentYear}`);
+        nextPaymentDate = new Date(`8-25-${currentYear}`);
         break;
+      default:
+        nextPaymentDate = new Date(`11-25-${currentYear + 1}`);
     }
-    const payment = this.prisma.taxesPayment.create({
+    const paymentBid = await this.prisma.organization.findFirst({
+      where: {
+        id: dto.organizationId,
+      },
+      include: {
+        taxesType: {
+          select: {
+            bid: true,
+          },
+        },
+      },
+    });
+
+    const mustPay = (paymentBid.taxesType.bid / 100) * dto.income;
+    const payment = await this.prisma.taxesPayment.create({
       data: {
         income: dto.income,
         clientId: dto.clientId,
         nextPaymentDate: nextPaymentDate,
         organizationId: dto.organizationId,
+        mustPay: mustPay.toFixed(2),
       },
     });
     return payment;
+  }
+
+  async createSuccessPayment(organizationId: number, payment: string) {
+    return this.prisma.taxesSuccessPayment.create({
+      data: {
+        organizationId,
+        paymentSum: payment,
+      },
+    });
+  }
+
+  async deleteClient(clientId: number) {
+    return this.prisma.client.delete({
+      where: {
+        id: clientId,
+      },
+    });
   }
 }

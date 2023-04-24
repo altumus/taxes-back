@@ -1,9 +1,10 @@
-import { Body, Controller, Get, Param, Post } from '@nestjs/common';
+import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import {
   CreateClientDto,
   CreateOrganizationDto,
   CreatePaymentDto,
+  CreateSuccessPayment,
 } from './dto/clients.dto';
 
 @Controller('clients')
@@ -33,6 +34,19 @@ export class ClientsController {
     return this.clientsService.getClientInfo(
       Number(inspectionId),
       Number(clientId),
+    );
+  }
+
+  @Delete('delete-client/:clientId')
+  deleteClient(@Param('clientId') clientId: number) {
+    return this.clientsService.deleteClient(Number(clientId));
+  }
+
+  @Post('add-success-payment')
+  createSuccessPayment(@Body() dto: CreateSuccessPayment) {
+    return this.clientsService.createSuccessPayment(
+      dto.organizationId,
+      dto.payment,
     );
   }
 

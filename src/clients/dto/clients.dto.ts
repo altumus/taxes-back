@@ -65,3 +65,11 @@ export class CreatePaymentDto {
   @IsNumber()
   income: number;
 }
+
+export class CreateSuccessPayment {
+  @IsNumber()
+  organizationId: number;
+
+  @IsString()
+  payment: string;
+}
