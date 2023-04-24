@@ -25,7 +25,7 @@ async function main() {
         bid: 6,
       },
       {
-        type: 'USN_INCOMING_MINUS_IP',
+        type: 'USN_INCOMING_MINUS_UL',
         bid: 15,
       },
       {

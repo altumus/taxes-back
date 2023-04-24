@@ -34,7 +34,66 @@ export class ClientsService {
       },
     });
 
-    return clients;
+    const taxesPaymentSuccess = await this.prisma.taxesSuccessPayment.findMany(
+      {},
+    );
+
+    const defineQuartal = (paymentDate) => {
+      const date = new Date(paymentDate);
+
+      const month = date.getMonth();
+      const year = date.getFullYear();
+
+      switch (true) {
+        case month <= 2:
+          return `Q1-${year}`;
+        case month <= 5:
+          return `Q2-${year}`;
+        case month <= 8:
+          return `Q3-${year}`;
+        default:
+          return `Q4-${year}`;
+      }
+    };
+
+    const findOwe = (organizationId: number, clientId: number) => {
+      const mappedSuccess = taxesPaymentSuccess.filter(
+        (taxes) => taxes.organizationId === organizationId,
+      );
+
+      let payedSum = 0;
+
+      for (let i = 0; i < mappedSuccess.length; i++) {
+        payedSum += Number(mappedSuccess[i].paymentSum);
+      }
+
+      const mappedPayments = clients.filter((client) => client.id === clientId);
+
+      let paymentSum = 0;
+
+      for (let i = 0; i < mappedPayments.length; i++) {
+        for (let j = 0; j < mappedPayments[i].TaxesPayment.length; j++) {
+          paymentSum += Number(mappedPayments[i].TaxesPayment[j].income);
+        }
+      }
+
+      return payedSum < paymentSum;
+    };
+
+    const flattenedClients = clients.map((client) => ({
+      id: client.id,
+      clientType: client.clientType,
+      dateCreate: client.dateCreate,
+      email: client.email,
+      inn: client.inn,
+      organizations: client.organizations,
+      phone: client.phone,
+      TaxesPayment: client.TaxesPayment,
+      haveOwe: client.organizations.map((organization) =>
+        findOwe(organization.id, organization.clientId),
+      )[0],
+    }));
+    return flattenedClients;
   }
 
   async getClientInfo(inspectionId: number, clientId: number) {
