@@ -86,6 +86,7 @@ export class ClientsService {
       dateCreate: client.dateCreate,
       email: client.email,
       inn: client.inn,
+      name: client.name,
       organizations: client.organizations,
       phone: client.phone,
       TaxesPayment: client.TaxesPayment,
