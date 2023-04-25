@@ -1,0 +1,3 @@
+-- AlterTable
+ALTER TABLE "organizations" ADD COLUMN     "archiveDate" TIMESTAMP(3) NOT NULL DEFAULT CURRENT_TIMESTAMP,
+ADD COLUMN     "isArchived" BOOLEAN NOT NULL DEFAULT true;

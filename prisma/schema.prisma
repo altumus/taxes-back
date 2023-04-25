@@ -28,6 +28,7 @@ model Client {
   email         String?
   clientType    ClientsType    @default(IP)
   TaxesPayment  TaxesPayment[]
+  isArchived Boolean @default(false)
 
   @@map("clients")
 }
@@ -50,6 +51,9 @@ model Organization {
   clientId     Int?
   TaxesPayment TaxesPayment[]
   TaxesSuccessPayment TaxesSuccessPayment[]
+
+  isArchived Boolean @default(false)
+  archiveDate DateTime @default(now())
 
   @@map("organizations")
 }

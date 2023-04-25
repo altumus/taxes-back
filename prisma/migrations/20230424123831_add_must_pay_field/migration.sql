@@ -6,3 +6,8 @@
 */
 -- AlterTable
 ALTER TABLE "TaxesPayment" ADD COLUMN     "mustPay" TEXT NOT NULL;
+
+
+
+
+

@@ -19,6 +19,7 @@ export class ClientsService {
             inspectionId,
           },
         },
+        isArchived: false,
       },
       include: {
         organizations: true,
@@ -37,24 +38,6 @@ export class ClientsService {
     const taxesPaymentSuccess = await this.prisma.taxesSuccessPayment.findMany(
       {},
     );
-
-    const defineQuartal = (paymentDate) => {
-      const date = new Date(paymentDate);
-
-      const month = date.getMonth();
-      const year = date.getFullYear();
-
-      switch (true) {
-        case month <= 2:
-          return `Q1-${year}`;
-        case month <= 5:
-          return `Q2-${year}`;
-        case month <= 8:
-          return `Q3-${year}`;
-        default:
-          return `Q4-${year}`;
-      }
-    };
 
     const findOwe = (organizationId: number, clientId: number) => {
       const mappedSuccess = taxesPaymentSuccess.filter(
@@ -93,6 +76,7 @@ export class ClientsService {
       haveOwe: client.organizations.map((organization) =>
         findOwe(organization.id, organization.clientId),
       )[0],
+      isArchived: client.isArchived,
     }));
     return flattenedClients;
   }

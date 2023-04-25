@@ -10,3 +10,7 @@ CREATE TABLE "TaxesSuccessPayment" (
 
 -- AddForeignKey
 ALTER TABLE "TaxesSuccessPayment" ADD CONSTRAINT "TaxesSuccessPayment_organizationId_fkey" FOREIGN KEY ("organizationId") REFERENCES "organizations"("id") ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+
+
