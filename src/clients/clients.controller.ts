@@ -54,4 +54,9 @@ export class ClientsController {
   createPayment(@Body() dto: CreatePaymentDto) {
     return this.clientsService.createPayment(dto);
   }
+
+  @Get('archived-clients/:inspectionId')
+  getArchivedClients(@Param('inspectionId') inspectionId: number) {
+    return this.clientsService.getArchivedClients(inspectionId);
+  }
 }
