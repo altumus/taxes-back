@@ -125,8 +125,16 @@ export class ClientsService {
   }
 
   async createOrganization(dto: CreateOrganizationDto) {
-    try {
-      const organization = await this.prisma.organization.create({
+    const found = await this.prisma.organization.findFirst({
+      where: {
+        organizationOgrn: dto.organizationOgrn,
+      },
+    });
+
+    if (found) {
+      return { status: 'exists' };
+    } else {
+      await this.prisma.organization.create({
         data: {
           name: dto.name,
           organizationInn: dto.organizationInn,
@@ -140,10 +148,9 @@ export class ClientsService {
           taxesTypeId: dto.taxesTypeId,
         },
       });
-      return organization;
-    } catch (error) {
-      console.log('error', error);
-      return error;
+      return {
+        status: 'created',
+      };
     }
   }
 
