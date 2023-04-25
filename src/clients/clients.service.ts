@@ -200,9 +200,12 @@ export class ClientsService {
   }
 
   async deleteClient(clientId: number) {
-    return this.prisma.client.delete({
+    return this.prisma.client.update({
       where: {
         id: clientId,
+      },
+      data: {
+        isArchived: true,
       },
     });
   }
