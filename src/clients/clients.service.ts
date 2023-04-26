@@ -19,7 +19,6 @@ export class ClientsService {
             inspectionId,
           },
         },
-        isArchived: false,
       },
       include: {
         organizations: true,
@@ -217,73 +216,14 @@ export class ClientsService {
     });
   }
 
-  async getArchivedClients(inspectionId: number) {
-    const clients = await this.prisma.client.findMany({
+  async returnClient(clientId: number) {
+    return this.prisma.client.update({
       where: {
-        organizations: {
-          every: {
-            inspectionId,
-          },
-        },
-        isArchived: true,
+        id: clientId,
       },
-      include: {
-        organizations: true,
-        TaxesPayment: {
-          select: {
-            id: true,
-            paymentDate: true,
-            nextPaymentDate: true,
-            income: true,
-            mustPay: true,
-          },
-        },
+      data: {
+        isArchived: false,
       },
     });
-
-    const taxesPaymentSuccess = await this.prisma.taxesSuccessPayment.findMany(
-      {},
-    );
-
-    const findOwe = (organizationId: number, clientId: number) => {
-      const mappedSuccess = taxesPaymentSuccess.filter(
-        (taxes) => taxes.organizationId === organizationId,
-      );
-
-      let payedSum = 0;
-
-      for (let i = 0; i < mappedSuccess.length; i++) {
-        payedSum += Number(mappedSuccess[i].paymentSum);
-      }
-
-      const mappedPayments = clients.filter((client) => client.id === clientId);
-
-      let paymentSum = 0;
-
-      for (let i = 0; i < mappedPayments.length; i++) {
-        for (let j = 0; j < mappedPayments[i].TaxesPayment.length; j++) {
-          paymentSum += Number(mappedPayments[i].TaxesPayment[j].income);
-        }
-      }
-
-      return payedSum < paymentSum;
-    };
-
-    const flattenedClients = clients.map((client) => ({
-      id: client.id,
-      clientType: client.clientType,
-      dateCreate: client.dateCreate,
-      email: client.email,
-      inn: client.inn,
-      name: client.name,
-      organizations: client.organizations,
-      phone: client.phone,
-      TaxesPayment: client.TaxesPayment,
-      haveOwe: client.organizations.map((organization) =>
-        findOwe(organization.id, organization.clientId),
-      )[0],
-      isArchived: client.isArchived,
-    }));
-    return flattenedClients;
   }
 }

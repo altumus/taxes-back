@@ -1,4 +1,12 @@
-import { Body, Controller, Delete, Get, Param, Post } from '@nestjs/common';
+import {
+  Body,
+  Controller,
+  Delete,
+  Get,
+  Param,
+  Patch,
+  Post,
+} from '@nestjs/common';
 import { ClientsService } from './clients.service';
 import {
   CreateClientDto,
@@ -55,8 +63,8 @@ export class ClientsController {
     return this.clientsService.createPayment(dto);
   }
 
-  @Get('archived-clients/:inspectionId')
-  getArchivedClients(@Param('inspectionId') inspectionId: number) {
-    return this.clientsService.getArchivedClients(inspectionId);
+  @Patch('return-client/:clientId')
+  returnClient(@Param('clientId') clientId: number) {
+    return this.clientsService.returnClient(Number(clientId));
   }
 }
