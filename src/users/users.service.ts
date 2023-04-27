@@ -38,11 +38,10 @@ export class UsersService {
     throw new ForbiddenException('Unauthorized');
   }
 
-  async deleteUser(id: number, login: string) {
+  async deleteUser(id: number) {
     return this.prisma.user.delete({
       where: {
         id,
-        login,
       },
     });
   }
@@ -63,6 +62,14 @@ export class UsersService {
     return this.prisma.user.findFirst({
       where: {
         login: login,
+      },
+    });
+  }
+
+  async getAllUsers(inspectionId: number) {
+    return this.prisma.user.findMany({
+      where: {
+        inspectionId: inspectionId,
       },
     });
   }
