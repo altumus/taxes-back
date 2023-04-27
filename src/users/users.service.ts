@@ -1,5 +1,7 @@
 import { ForbiddenException, Injectable } from '@nestjs/common';
+import { UsersType } from '@prisma/client';
 import { PrismaService } from 'src/prisma/prisma.service';
+import { CreateUserDto } from './dto/users.dto';
 
 @Injectable()
 export class UsersService {
@@ -41,6 +43,26 @@ export class UsersService {
       where: {
         id,
         login,
+      },
+    });
+  }
+
+  async addUser(dto: CreateUserDto) {
+    return this.prisma.user.create({
+      data: {
+        login: dto.login,
+        name: dto.name,
+        password: dto.password,
+        inspectionId: dto.inspectionId,
+        type: UsersType[dto.type],
+      },
+    });
+  }
+
+  async checkUser(login: string) {
+    return this.prisma.user.findFirst({
+      where: {
+        login: login,
       },
     });
   }

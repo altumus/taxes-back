@@ -6,3 +6,20 @@ export class DeleteUserDto {
   @IsString()
   login: string;
 }
+
+export class CreateUserDto {
+  @IsString()
+  name: string;
+
+  @IsString()
+  login: string;
+
+  @IsString()
+  password: string;
+
+  @IsString()
+  type: string;
+
+  @IsNumber()
+  inspectionId: number;
+}
