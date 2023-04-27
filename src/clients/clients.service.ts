@@ -127,6 +127,7 @@ export class ClientsService {
     const found = await this.prisma.organization.findFirst({
       where: {
         organizationOgrn: dto.organizationOgrn,
+        organizationInn: dto.organizationInn,
       },
     });
 

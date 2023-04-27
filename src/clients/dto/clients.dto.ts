@@ -21,9 +21,6 @@ export class CreateClientDto {
 }
 
 export class CreateOrganizationDto {
-  @IsNumber()
-  id: number;
-
   @IsString()
   name: string;
 
