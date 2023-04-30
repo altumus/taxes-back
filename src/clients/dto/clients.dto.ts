@@ -1,4 +1,4 @@
-import { IsNumber, IsString } from 'class-validator';
+import { IsBoolean, IsNumber, IsString } from 'class-validator';
 
 export class CreateClientDto {
   @IsNumber()
@@ -63,10 +63,33 @@ export class CreatePaymentDto {
   income: number;
 }
 
-export class CreateSuccessPayment {
+export class CreateSuccessPaymentDto {
   @IsNumber()
   organizationId: number;
 
   @IsString()
   payment: string;
+}
+
+export class EditClientDto {
+  @IsNumber()
+  id: number;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  inn: string;
+
+  @IsString()
+  phone: string;
+
+  @IsString()
+  email: string;
+
+  @IsString()
+  clientType: string;
+
+  @IsBoolean()
+  isArchived: boolean;
 }

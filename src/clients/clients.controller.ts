@@ -12,7 +12,8 @@ import {
   CreateClientDto,
   CreateOrganizationDto,
   CreatePaymentDto,
-  CreateSuccessPayment,
+  CreateSuccessPaymentDto,
+  EditClientDto,
 } from './dto/clients.dto';
 
 @Controller('clients')
@@ -51,7 +52,7 @@ export class ClientsController {
   }
 
   @Post('add-success-payment')
-  createSuccessPayment(@Body() dto: CreateSuccessPayment) {
+  createSuccessPayment(@Body() dto: CreateSuccessPaymentDto) {
     return this.clientsService.createSuccessPayment(
       dto.organizationId,
       dto.payment,
@@ -66,5 +67,10 @@ export class ClientsController {
   @Patch('return-client/:clientId')
   returnClient(@Param('clientId') clientId: number) {
     return this.clientsService.returnClient(Number(clientId));
+  }
+
+  @Patch('edit-client')
+  editClient(@Body() dto: EditClientDto) {
+    return this.clientsService.editClient(dto);
   }
 }

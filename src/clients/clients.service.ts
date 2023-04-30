@@ -4,8 +4,9 @@ import {
   CreateClientDto,
   CreateOrganizationDto,
   CreatePaymentDto,
+  EditClientDto,
 } from './dto/clients.dto';
-import { ClientsType } from '@prisma/client';
+import { ClientsType, UsersType } from '@prisma/client';
 
 @Injectable()
 export class ClientsService {
@@ -224,6 +225,22 @@ export class ClientsService {
       },
       data: {
         isArchived: false,
+      },
+    });
+  }
+
+  async editClient(dto: EditClientDto) {
+    return this.prisma.client.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        name: dto.name,
+        clientType: UsersType[dto.clientType],
+        email: dto.email,
+        inn: dto.inn,
+        phone: dto.phone,
+        isArchived: dto.isArchived,
       },
     });
   }
