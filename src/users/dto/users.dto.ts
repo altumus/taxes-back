@@ -16,3 +16,17 @@ export class CreateUserDto {
   @IsNumber()
   inspectionId: number;
 }
+
+export class EditUserDto {
+  @IsNumber()
+  id: number;
+
+  @IsString()
+  login: string;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  password: string;
+}
