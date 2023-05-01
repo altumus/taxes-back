@@ -42,4 +42,9 @@ export class UsersController {
   editUser(@Body() dto: EditUserDto) {
     return this.usersService.editUser(dto);
   }
+
+  @Get('get-user-by-id/:userId')
+  getUserById(@Param('userId') userId: number) {
+    return this.usersService.getUserById(Number(userId));
+  }
 }

@@ -38,6 +38,14 @@ export class UsersService {
     throw new ForbiddenException('Unauthorized');
   }
 
+  async getUserById(userId: number) {
+    return this.prisma.user.findFirst({
+      where: {
+        id: userId,
+      },
+    });
+  }
+
   async deleteUser(id: number) {
     return this.prisma.user.delete({
       where: {
@@ -75,15 +83,29 @@ export class UsersService {
   }
 
   async editUser(dto: EditUserDto) {
-    return this.prisma.user.update({
-      where: {
-        id: dto.id,
-      },
-      data: {
-        login: dto.login,
-        name: dto.name,
-        password: dto.password,
-      },
-    });
+    if (!dto.type) {
+      return this.prisma.user.update({
+        where: {
+          id: dto.id,
+        },
+        data: {
+          login: dto.login,
+          name: dto.name,
+          password: dto.password,
+        },
+      });
+    } else {
+      return this.prisma.user.update({
+        where: {
+          id: dto.id,
+        },
+        data: {
+          login: dto.login,
+          name: dto.name,
+          password: dto.password,
+          type: UsersType[dto.type],
+        },
+      });
+    }
   }
 }
