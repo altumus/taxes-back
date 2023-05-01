@@ -5,6 +5,7 @@ import {
   CreateOrganizationDto,
   CreatePaymentDto,
   EditClientDto,
+  EditOrganizationDto,
 } from './dto/clients.dto';
 import { ClientsType, UsersType } from '@prisma/client';
 
@@ -98,6 +99,49 @@ export class ClientsService {
             TaxesPayment: true,
           },
         },
+      },
+    });
+  }
+
+  async getClientWithOrganization(
+    inspectionId: number,
+    clientId: number,
+    organizationId: number,
+  ) {
+    return this.prisma.client.findFirst({
+      where: {
+        id: clientId,
+        organizations: {
+          every: {
+            id: organizationId,
+            inspectionId: inspectionId,
+          },
+        },
+      },
+      include: {
+        organizations: {
+          where: {
+            id: organizationId,
+          },
+        },
+      },
+    });
+  }
+
+  async editOrganization(dto: EditOrganizationDto) {
+    return this.prisma.organization.update({
+      where: {
+        id: dto.id,
+      },
+      data: {
+        name: dto.name,
+        organizationInn: dto.organizationInn,
+        organizationKpp: dto.organizationKpp,
+        organizationJuridicalAddress: dto.organizationJuridicalAddress,
+        organizationOgrn: dto.organizationOgrn,
+        organizationPhysicalAddress: dto.organizationPhysicalAddress,
+        ownerPosition: dto.ownerPosition,
+        taxesTypeId: dto.taxesTypeId,
       },
     });
   }

@@ -93,3 +93,32 @@ export class EditClientDto {
   @IsBoolean()
   isArchived: boolean;
 }
+
+export class EditOrganizationDto {
+  @IsNumber()
+  id: number;
+
+  @IsString()
+  name: string;
+
+  @IsString()
+  organizationInn: string;
+
+  @IsString()
+  organizationJuridicalAddress: string;
+
+  @IsString()
+  organizationKpp: string;
+
+  @IsString()
+  organizationOgrn: string;
+
+  @IsString()
+  organizationPhysicalAddress: string;
+
+  @IsString()
+  ownerPosition: string;
+
+  @IsNumber()
+  taxesTypeId: number;
+}

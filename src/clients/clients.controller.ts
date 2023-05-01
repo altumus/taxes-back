@@ -14,6 +14,7 @@ import {
   CreatePaymentDto,
   CreateSuccessPaymentDto,
   EditClientDto,
+  EditOrganizationDto,
 } from './dto/clients.dto';
 
 @Controller('clients')
@@ -46,6 +47,19 @@ export class ClientsController {
     );
   }
 
+  @Get('client-with-org/:inspectionId/:clientId/:organizationId')
+  getClientWithOrganization(
+    @Param('inspectionId') inspectionId: number,
+    @Param('clientId') clientId: number,
+    @Param('organizationId') organizationId: number,
+  ) {
+    return this.clientsService.getClientWithOrganization(
+      Number(inspectionId),
+      Number(clientId),
+      Number(organizationId),
+    );
+  }
+
   @Delete('delete-client/:clientId')
   deleteClient(@Param('clientId') clientId: number) {
     return this.clientsService.deleteClient(Number(clientId));
@@ -72,5 +86,10 @@ export class ClientsController {
   @Patch('edit-client')
   editClient(@Body() dto: EditClientDto) {
     return this.clientsService.editClient(dto);
+  }
+
+  @Patch('edit-organization')
+  editOrganization(@Body() dto: EditOrganizationDto) {
+    return this.clientsService.editOrganization(dto);
   }
 }
