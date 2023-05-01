@@ -55,7 +55,7 @@ async function main() {
         },
       ],
     }),
-    // Создание админа
+    // Создание админов
     await prisma.user.create({
       data: {
         login: 'brunyhow@mail.ru',
@@ -65,6 +65,15 @@ async function main() {
         password: '25d55ad283aa400af464c76d713c07ad',
       },
     });
+  await prisma.user.create({
+    data: {
+      login: 'testmail@mail.ru',
+      inspectionId: 2,
+      name: 'Дионисович Дио Дионович',
+      type: 'ADMIN',
+      password: '25d55ad283aa400af464c76d713c07ad',
+    },
+  });
 }
 main()
   .then(() => {

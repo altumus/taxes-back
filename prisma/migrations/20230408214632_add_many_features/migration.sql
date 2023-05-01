@@ -36,3 +36,5 @@ CREATE TABLE "TaxesType" (
 
     CONSTRAINT "TaxesType_pkey" PRIMARY KEY ("id")
 );
+
+
